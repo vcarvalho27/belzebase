@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BelzeBase.iml" filepath="$PROJECT_DIR$/BelzeBase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/belzebase/belzebase.iml" filepath="$PROJECT_DIR$/belzebase/belzebase.iml" />
+      <module fileurl="file://$PROJECT_DIR$/belzebaseexample/belzebaseexample.iml" filepath="$PROJECT_DIR$/belzebaseexample/belzebaseexample.iml" />
+    </modules>
+  </component>
+</project>

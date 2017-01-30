@@ -1,0 +1,70 @@
+package appcompras.jcom.com.br.appcompras.dbversion;
+
+import java.util.List;
+
+import appcompras.jcom.com.br.database.IDatabaseVersion;
+
+
+public class version_0001 implements IDatabaseVersion {
+    @Override
+    public List<String> getScriptList() {
+        scriptList.add(
+                "CREATE TABLE IF NOT EXISTS TB_USUARIO ("+
+                        "_id                            INTEGER        PRIMARY KEY AUTOINCREMENT,"+
+                        "CODIGO  	                    VARCHAR(24),"+
+                        "NOME                           VARCHAR(80),"+
+                        "EMAIL                          VARCHAR(128),"+
+                        "FONE                           VARCHAR(14)"+
+                ");"
+        );
+
+        scriptList.add(
+                "CREATE TABLE IF NOT EXISTS TB_FORNECEDOR ("+
+                        "_id                            INTEGER        PRIMARY KEY AUTOINCREMENT,"+
+                        "CODIGO  	                    VARCHAR(12),"+
+                        "RAZAO_SOCIAL                   VARCHAR(80),"+
+                        "NOME_FANTASIA                  VARCHAR(80),"+
+                        "CONTATO                        VARCHAR(40),"+
+                        "TELEFONE                       VARCHAR(14),"+
+                        "EMAIL                          VARCHAR(128)"+
+                ");"
+        );
+
+        scriptList.add(
+                "CREATE TABLE IF NOT EXISTS TB_PRODUTO ("+
+                        "_id                            INTEGER        PRIMARY KEY AUTOINCREMENT,"+
+                        "CODIGO  	                    VARCHAR(24),"+
+                        "NOME                           VARCHAR(80),"+
+                        "UNIDADE_MEDIDA                 VARCHAR(4),"+
+                        "PESO                           DECIMAL(12,4),"+
+                        "PRECO                          DECIMAL(18,2),"+
+                        "QTD_VOLUME                     VARCHAR(12,4)"+
+                ");"
+        );
+
+        scriptList.add(
+                "CREATE TABLE IF NOT EXISTS TB_PEDIDO ("+
+                        "_id                            INTEGER        PRIMARY KEY AUTOINCREMENT,"+
+                        "CODIGO  	                    VARCHAR(24),"+// NUMEROPEDIDO+CODIGOFORNECEDOR
+                        "NUMERO                         VARCHAR(12),"+
+                        "CODIGO_FORNECEDOR              VARCHAR(12),"+
+                        "DATA_DIGITACAO                 DATE,"+
+                        "DATA_ENVIO                     DATE,"+
+                        "TIPO                           VARCHAR(1),"+ // P - PEDIDO DE COMPRA ~~ F - COTACAO DE PREÇO
+                        "OBSERVACOES                    VARCHAR(512)"+
+                ");"
+        );
+
+        scriptList.add(
+                "CREATE TABLE IF NOT EXISTS TB_PEDIDO_ITEM ("+
+                        "_id                            INTEGER        PRIMARY KEY AUTOINCREMENT,"+
+                        "CODIGO_PEDIDO  	            VARCHAR(12),"+
+                        "CODIGO_PRODUTO                 VARCHAR(24),"+
+                        "PRECO                          VARCHAR(18,4),"+
+                        "QUANTIDADE                     VARCHAR(12,4)"+
+                ");"
+        );
+
+        return scriptList;
+    }
+}
