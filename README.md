@@ -20,7 +20,7 @@ allprojects {
  
 ```gradle
 dependencies {
-	compile 'com.github.vcarvalho27:BelzeBase:0.1.1'
+	compile 'com.github.vcarvalho27:BelzeBase:0.1.2'
 }
 ```
 
@@ -39,6 +39,6 @@ dependencies {
 <dependency>
         <groupId>com.github.vcarvalho27</groupId>
 	<artifactId>BelzeBase</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 </dependency>
 ```
