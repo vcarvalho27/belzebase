@@ -3,7 +3,9 @@ package com.vcarvalho27.belzebase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -80,7 +82,13 @@ public abstract class DaoObject<T extends IModel> {
     }
 
     public Boolean insert(T obj) {
-        return db.insert(this.getTableName(), null, getContentValues(obj)) != -1;
+        try{
+            return db.insert(this.getTableName(), null, getContentValues(obj)) != -1;
+        }
+        catch (SQLException e) {
+            Log.e("BelzeBase.DaoObject.insert("+this.getTableName()+")", e.getMessage());
+            return false;
+        }
     }
 
     public Boolean insert(List<T> listObj) {

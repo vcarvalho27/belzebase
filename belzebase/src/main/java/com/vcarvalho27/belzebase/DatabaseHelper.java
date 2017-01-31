@@ -3,9 +3,11 @@ package com.vcarvalho27.belzebase;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +57,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+
         for (int i = oldVersion; i < newVersion; i++){
             scripts.addAll(getScript(i+1));
         }
 
-        for (String s:scripts) {
-            db.execSQL(s);
+        try {
+            for (String s : scripts) {
+                db.execSQL(s);
+            }
         }
+        catch (SQLException e) {
+            Log.e("BelzeBase.DatabaseHelper.onUpgrade(newVersion="+newVersion+")", e.getMessage());
+        }
+
+
+
+
     }
 
     public List<String> getScript(int version){
