@@ -1,10 +1,7 @@
-package com.vcarvalho27.belzebase.teste;
+package com.vcarvalho27.belzebaseexample.model;
 
-import appcompras.jcom.com.br.database.IModel;
-import appcompras.jcom.com.br.database.annotation.Column;
-import appcompras.jcom.com.br.database.annotation.ForeignKey;
-import appcompras.jcom.com.br.database.annotation.ForeignKeyField;
-import appcompras.jcom.com.br.database.annotation.PrimaryKey;
+import com.vcarvalho27.belzebase.IModel;
+import com.vcarvalho27.belzebase.annotation.*;
 
 /**
  * Created by VMC on 26/01/2017.
