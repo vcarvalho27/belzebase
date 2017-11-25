@@ -7,8 +7,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.vcarvalho27.belzebase.annotation.Table;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,15 +22,40 @@ import java.util.List;
  */
 public abstract class DaoObject<T extends IModel> {
 
-    private Class<T> type;
+    private T genericType = null;
     private SQLiteDatabase db;
+    private List<Annotation> classAnnotations;
 
     protected DaoObject(Context ctx) {
         this.db = DatabaseHelper.getDatabase(ctx);
     }
 
+    private List<Annotation> getClassAnnotations(){
+        List<Annotation> list = new ArrayList<>();
+        for (Annotation annotation : genericType.getClass().getAnnotations()) {
+            Class<? extends Annotation> type = annotation.annotationType();
+            list.add(annotation);
+            /*for (Field field :  type.getDeclaredFields()) {
+                for (Annotation annotation : field.getDeclaredAnnotations()) {
+                System.out.println(" " + field.getName() + ": " + value);
+            }*/
+        }
+        return list;
+    }
 
-    protected abstract String getTableName();
+    protected String getTableName(){
+        String table = getFromCursor(null).getClass().getAnnotation(Table.class).value();
+        /*for (Annotation a : getClassAnnotations()){
+            if (a.annotationType() == Table.class)
+                table = ((Table)a).value();
+        }*/
+
+        if (table.isEmpty())
+            Log.e("DaoObject", "Missing TABLE annotation in class " + genericType.getClass().getName());
+
+        return table;
+    }
+
 
     protected abstract String getWhereClause();
 
@@ -33,6 +64,23 @@ public abstract class DaoObject<T extends IModel> {
     protected abstract ContentValues getContentValues(T obj);
 
     protected abstract T getFromCursor(Cursor cursor);
+
+    protected String getString(Cursor cursor, String columnName){
+        return cursor.getString(cursor.getColumnIndex(columnName));
+    }
+    protected Integer getInt(Cursor cursor, String columnName){
+        return cursor.getInt(cursor.getColumnIndex(columnName));
+    }
+    protected Double getDouble(Cursor cursor, String columnName){
+        return cursor.getDouble(cursor.getColumnIndex(columnName));
+    }
+    protected Date getDate(Cursor cursor, String columnName){
+        return null;//cursor.get(cursor.getColumnIndex(columnName));
+    }
+    protected Boolean getBoolean(Cursor cursor, String columnName){
+        return null;//cursor.getB(cursor.getColumnIndex(columnName));
+    }
+
 
     public Boolean any() {
         return this.count() > 0;

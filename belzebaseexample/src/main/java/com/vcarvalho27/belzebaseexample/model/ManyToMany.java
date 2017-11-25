@@ -7,8 +7,12 @@ import com.vcarvalho27.belzebase.annotation.*;
  * Created by VMC on 26/01/2017.
  */
 
-@Column("MANY_TO_MANY")
+@Table("MANY_TO_MANY")
 public class ManyToMany implements IModel {
+
+    public ManyToMany(){
+
+    }
 
     @PrimaryKey
     @Column("ID")

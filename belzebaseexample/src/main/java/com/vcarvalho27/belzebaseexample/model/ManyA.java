@@ -9,8 +9,12 @@ import com.vcarvalho27.belzebase.annotation.*;
  * Created by VMC on 26/01/2017.
  */
 
-@Column("MANY_A")
+@Table("MANY_A")
 public class ManyA implements IModel {
+
+    public ManyA(){
+
+    }
 
     @PrimaryKey
     @Column("ID")

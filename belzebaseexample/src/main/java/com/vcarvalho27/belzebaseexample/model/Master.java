@@ -13,6 +13,10 @@ import com.vcarvalho27.belzebase.annotation.*;
 @Table("MASTER")
 public class Master implements IModel {
 
+    public Master(){
+
+    }
+
     @PrimaryKey
     @Column("ID")
     private int id;
@@ -36,4 +40,53 @@ public class Master implements IModel {
 
     @InversedForeignKey(foreignTableName = "DETAIL", fieldName = "ID")
     public List<Detail> detailList;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIncrementUniq() {
+        return incrementUniq;
+    }
+
+    public void setIncrementUniq(int incrementUniq) {
+        this.incrementUniq = incrementUniq;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
+    }
+
+    public boolean isTrueOrFalse() {
+        return trueOrFalse;
+    }
+
+    public void setTrueOrFalse(boolean trueOrFalse) {
+        this.trueOrFalse = trueOrFalse;
+    }
+
+    public List<Detail> getDetailList() {
+        return detailList;
+    }
+
+    public void setDetailList(List<Detail> detailList) {
+        this.detailList = detailList;
+    }
 }

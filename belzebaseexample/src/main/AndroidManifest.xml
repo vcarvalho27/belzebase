@@ -8,6 +8,7 @@
 
         <meta-data android:name="DB_NAME" android:value="dbname" />
         <meta-data android:name="DB_VERSION" android:value="1" />
+        <meta-data android:name="MODEL_PACKAGE" android:value="model" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
