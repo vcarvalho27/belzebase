@@ -9,7 +9,6 @@ import com.vcarvalho27.belzebase.annotation.*;
  * Created by VMC on 26/01/2017.
  */
 
-@Table("MANY_B")
 public class ManyB implements IModel {
 
     public ManyB(){

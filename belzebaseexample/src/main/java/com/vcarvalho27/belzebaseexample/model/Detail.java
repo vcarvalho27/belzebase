@@ -9,9 +9,6 @@ import com.vcarvalho27.belzebase.annotation.*;
 
 @Table("DETAIL")
 public class Detail implements IModel {
-    public Detail(){
-
-    }
 
     @PrimaryKey
     @Column("ID")

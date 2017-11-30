@@ -10,7 +10,7 @@ import com.vcarvalho27.belzebase.annotation.*;
  */
 
 @Table("MANY_A")
-public class ManyA implements IModel {
+public class ManyA  {
 
     public ManyA(){
 

@@ -77,26 +77,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             for (String modelClass : classes) {
                 Class<?> clazz = Class.forName(modelClass);
                 Constructor<?> ctor = clazz.getConstructor();
+                if (ctor != null) {
+                    Object classObj = ctor.newInstance();
+                    if (classObj instanceof IModel) {
+                        IModel object = (IModel) classObj;
+                        Table tableAnnotation = object.getClass().getAnnotation(Table.class);
+                        if (tableAnnotation != null && !tableAnnotation.value().isEmpty()) {
+                            String tableName = tableAnnotation.value();
+                            String sqlCreate = "create table " + tableName + "(";
 
-                IModel object = (IModel) ctor.newInstance();
-                String tableName = object.getClass().getAnnotation(Table.class).value();
-                String sqlCreate = "create table " + tableName + "(";
-
-                int fieldCount = 0;
-                for (Field field : object.getClass().getDeclaredFields()) {
-                    Column columnAnnot = field.getAnnotation(Column.class);
-                    PrimaryKey primaryAnnot = field.getAnnotation(PrimaryKey.class);
-                    if (columnAnnot !=null) {
-                        String fieldName = columnAnnot.value();
-                        String fieldType = getSQLiteType(field.getType());
-                        sqlCreate += primaryAnnot == null ? fieldName + " " + fieldType + ", " :fieldName + " " + fieldType + " primary key autoincrement, ";
-                        fieldCount++;
+                            int fieldCount = 0;
+                            for (Field field : object.getClass().getDeclaredFields()) {
+                                Column columnAnnot = field.getAnnotation(Column.class);
+                                PrimaryKey primaryAnnot = field.getAnnotation(PrimaryKey.class);
+                                if (columnAnnot != null) {
+                                    String fieldName = columnAnnot.value();
+                                    String fieldType = getSQLiteType(field.getType());
+                                    sqlCreate += primaryAnnot == null ? fieldName + " " + fieldType + ", " : fieldName + " " + fieldType + " primary key autoincrement, ";
+                                    fieldCount++;
+                                }
+                            }
+                            if (fieldCount > 0) {
+                                sqlCreate = sqlCreate.substring(0, sqlCreate.length() - 2) + ")";
+                                dropTable(db, tableName);
+                                createTable(db, sqlCreate);
+                            }
+                        }
                     }
-                }
-                if (fieldCount > 0) {
-                    sqlCreate = sqlCreate.substring(0, sqlCreate.length()-2) + ")";
-                    dropTable(db, tableName);
-                    createTable(db, sqlCreate);
                 }
             }
         }

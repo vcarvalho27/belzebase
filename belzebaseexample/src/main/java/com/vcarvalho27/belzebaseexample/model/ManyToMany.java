@@ -10,9 +10,6 @@ import com.vcarvalho27.belzebase.annotation.*;
 @Table("MANY_TO_MANY")
 public class ManyToMany implements IModel {
 
-    public ManyToMany(){
-
-    }
 
     @PrimaryKey
     @Column("ID")
