@@ -73,37 +73,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {
             List<String> classes = getClassesOfPackage();
-
+            Class<?> clazz = null;
             for (String modelClass : classes) {
-                Class<?> clazz = Class.forName(modelClass);
-                Constructor<?> ctor = clazz.getConstructor();
-                if (ctor != null) {
-                    Object classObj = ctor.newInstance();
-                    if (classObj instanceof IModel) {
-                        IModel object = (IModel) classObj;
-                        Table tableAnnotation = object.getClass().getAnnotation(Table.class);
-                        if (tableAnnotation != null && !tableAnnotation.value().isEmpty()) {
-                            String tableName = tableAnnotation.value();
-                            String sqlCreate = "create table " + tableName + "(";
+                try {
+                    clazz = Class.forName(modelClass);
+                    if (clazz != null && !clazz.isEnum() && !clazz.isInterface() && !clazz.isAnnotation() && !clazz.isPrimitive()) {
+                        Constructor<?> ctor = clazz.getConstructor();
+                        if (ctor != null) {
+                            Object classObj = ctor.newInstance();
+                            if (classObj instanceof IModel) {
+                                IModel object = (IModel) classObj;
+                                Table tableAnnotation = object.getClass().getAnnotation(Table.class);
+                                if (tableAnnotation != null && !tableAnnotation.value().isEmpty()) {
+                                    String tableName = tableAnnotation.value();
+                                    String sqlCreate = "create table " + tableName + "(";
 
-                            int fieldCount = 0;
-                            for (Field field : object.getClass().getDeclaredFields()) {
-                                Column columnAnnot = field.getAnnotation(Column.class);
-                                PrimaryKey primaryAnnot = field.getAnnotation(PrimaryKey.class);
-                                if (columnAnnot != null) {
-                                    String fieldName = columnAnnot.value();
-                                    String fieldType = getSQLiteType(field.getType());
-                                    sqlCreate += primaryAnnot == null ? fieldName + " " + fieldType + ", " : fieldName + " " + fieldType + " primary key autoincrement, ";
-                                    fieldCount++;
+                                    int fieldCount = 0;
+                                    for (Field field : object.getClass().getDeclaredFields()) {
+                                        Column columnAnnot = field.getAnnotation(Column.class);
+                                        PrimaryKey primaryAnnot = field.getAnnotation(PrimaryKey.class);
+                                        if (columnAnnot != null) {
+                                            String fieldName = columnAnnot.value();
+                                            String fieldType = getSQLiteType(field.getType());
+                                            sqlCreate += primaryAnnot == null ? fieldName + " " + fieldType + ", " : fieldName + " " + fieldType + " primary key autoincrement, ";
+                                            fieldCount++;
+                                        }
+                                    }
+                                    if (fieldCount > 0) {
+                                        sqlCreate = sqlCreate.substring(0, sqlCreate.length() - 2) + ")";
+                                        dropTable(db, tableName);
+                                        createTable(db, sqlCreate);
+                                    }
                                 }
-                            }
-                            if (fieldCount > 0) {
-                                sqlCreate = sqlCreate.substring(0, sqlCreate.length() - 2) + ")";
-                                dropTable(db, tableName);
-                                createTable(db, sqlCreate);
                             }
                         }
                     }
+                }
+                catch (NoSuchMethodException nsme){
+                    if ("<init> []".equals(nsme.getMessage()) && clazz.getSimpleName() != null) {
+                        Log.e("Belzebase", "Its necessary to implement a default constructor with no parameters");
+                        Log.e("Belzebase", "Object: " +clazz.getSimpleName());
+                    }
+                    nsme.printStackTrace();
                 }
             }
         }
