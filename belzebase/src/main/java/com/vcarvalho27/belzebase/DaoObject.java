@@ -257,6 +257,7 @@ public abstract class DaoObject<T extends IModel> {
         return lista;
     }
 
+
     public List<T> listAll(String whereClause, String[] whereArgs){
         Cursor cursor = db.rawQuery(" SELECT * FROM " + getTableName() + " WHERE " + whereClause, whereArgs);
         List<T> lista = new ArrayList<>();
@@ -269,5 +270,28 @@ public abstract class DaoObject<T extends IModel> {
         return lista;
     }
 
+    public List<T> listAllOrder(String field, String order) {
+        Cursor cursor = db.rawQuery(" SELECT * FROM " + getTableName() + " ORDER BY " + field + " " + order, null);
+        List<T> lista = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            lista.add(getFromCursor(cursor));
+        }
+
+        cursor.close();
+        return lista;
+    }
+
+    public List<T> listAllOrder(String whereClause, String[] whereArgs, String field, String order){
+        Cursor cursor = db.rawQuery(" SELECT * FROM " + getTableName() + " WHERE " + whereClause+ " ORDER BY " + field + " " + order, whereArgs);
+        List<T> lista = new ArrayList<>();
+
+        while(cursor.moveToNext()){
+            lista.add(getFromCursor(cursor));
+        }
+
+        cursor.close();
+        return lista;
+    }
 
 }

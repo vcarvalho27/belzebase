@@ -1,5 +1,6 @@
 package com.vcarvalho27.belzebaseexample.model;
 
+import com.vcarvalho27.belzebase.DatabaseModel;
 import com.vcarvalho27.belzebase.IModel;
 import com.vcarvalho27.belzebase.annotation.*;
 
@@ -8,7 +9,15 @@ import com.vcarvalho27.belzebase.annotation.*;
  */
 
 @Table("DETAIL")
-public class Detail implements IModel {
+public class Detail extends DatabaseModel {
+
+    public Detail(int id, int idMaster, Master master, double value, int qtd) {
+        this.id = id;
+        this.idMaster = idMaster;
+        this.master = master;
+        this.value = value;
+        this.qtd = qtd;
+    }
 
     @PrimaryKey
     @Column("ID")
