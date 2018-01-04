@@ -15,6 +15,7 @@ import com.vcarvalho27.belzebase.annotation.Table;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Repeatable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -138,6 +139,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             case "boolean":
             case "Boolean":
                 return "boolean";
+            case "byte[]":
+                return "blob";
         }
 
         return "TEXT";

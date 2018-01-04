@@ -134,7 +134,7 @@ public abstract class DaoObject<T extends IModel> {
             return db.insert(this.getTableName(), null, getContentValues(obj)) != -1;
         }
         catch (SQLException e) {
-            Log.e("BelzeBase.DaoObject.insert("+this.getTableName()+")", e.getMessage());
+            Log.e("BelzeBase.insert("+this.getTableName()+")", e.getMessage());
             return false;
         }
     }
