@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class DaoObject<T extends IModel> {
 
     private T genericType = null;
-    private SQLiteDatabase db;
+    protected SQLiteDatabase db;
     private List<Annotation> classAnnotations;
 
     protected DaoObject(Context ctx) {
@@ -78,7 +78,8 @@ public abstract class DaoObject<T extends IModel> {
         return null;//cursor.get(cursor.getColumnIndex(columnName));
     }
     protected Boolean getBoolean(Cursor cursor, String columnName){
-        return null;//cursor.getB(cursor.getColumnIndex(columnName));
+        String bool = cursor.getString(cursor.getColumnIndex(columnName));
+        return bool!=null && (bool.equals("1") || bool.equalsIgnoreCase("true"));
     }
 
 
